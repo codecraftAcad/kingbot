@@ -84,6 +84,11 @@ const validateReferralId = async (refId) => {
 };
 
 // Launch the bot
-bot.launch();
+bot.launch({
+    webhook: {
+        domain: 'https://kingbot-s1i0.onrender.com',
+        port: process.env.PORT || 3000,
+    },
+});
 
 console.log("Bot is running...");
