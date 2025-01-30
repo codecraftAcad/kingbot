@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  telegramId      String   @unique
+  username        String   @unique
+  photoUrl        String?  // Optional field for photo URL
+  level           Int      @default(0)
+  points           Int      @default(0)
+  lastRefillTime  DateTime @default(now())
+  referralCount   Int      @default(0)
+  referredBy      String?
+  referrals       Referral[]
+  profitPerHour   Int      @default(0)
+  lastEarningsUpdate DateTime? 
+  lastCheckIn     DateTime?
+  currentFarmSession DateTime?
+  checkInStreak   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userTasks       UserTask[]
+
+}
+
+
+
+
+model Referral {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   // The user who made the referral
+  referredId  String   // The referred user ID
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade) // User who made the referral
+  createdAt   DateTime @default(now())
+
+  @@map("referrals")
+}
+
+enum TaskCategory {
+  ONCHAIN
+  ACADEMY
+  FRENS
+  FARMING
+  SOCIALS
+}
+
+model Task {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  category    TaskCategory // ONCHAIN, ACADEMY, etc.
+  title       String
+  description String?     // Additional details about the task
+  imagePath   String?     // Optional image
+  rewards     Int
+  taskUrl     String?     // Link to complete the task
+  status      String?      @default("pending") // active, inactive
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  userTasks   UserTask[] // Relation with user tasks
+}
+
+model UserTask {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  taskId      String   @db.ObjectId
+  claimed     Boolean  @default(false)  // Tracks if the reward has been claimed
+  
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id])
+}
+
+
