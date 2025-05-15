@@ -27,7 +27,7 @@ bot.start(async (ctx) => {
         `Referral ID ${refId} is valid. Proceed with referral logic.`
       );
       ctx.replyWithHTML(
-        `Welcome to SoftNote Rush ${ctx.from.username} \n\n <b>You were referred by ${isValidReferral.username}</b> \n\nLaunch the app by clicking the launch button`,
+        `Welcome to KingPar ${ctx.from.username} \n\n <b>You were referred by ${isValidReferral.username}</b> \n\nLaunch the app by clicking the launch button`,
         {
           reply_markup: {
             inline_keyboard: [
@@ -44,7 +44,7 @@ bot.start(async (ctx) => {
     } else {
       console.log(`Referral ID ${refId} is not valid.`);
       ctx.replyWithHTML(
-        `Welcome to SoftNote Rush bot ${ctx.from.username} \n\n <b>Your referral Link is invalid!!</b> \n\n Launch the app by clicking the launch button`,
+        `Welcome to Kingpar bot ${ctx.from.username} \n\n <b>Your referral Link is invalid!!</b> \n\n Launch the app by clicking the launch button`,
         {
           reply_markup: {
             inline_keyboard: [
@@ -57,7 +57,7 @@ bot.start(async (ctx) => {
   } else {
     console.log("No referral ID provided.");
     ctx.reply(
-      `Welcome to SoftNote Rush bot ${ctx.from.username} \n\n Launch the app by clicking the launch button`,
+      `Welcome to KingPar bot ${ctx.from.username} \n\n Launch the app by clicking the launch button`,
       {
         reply_markup: {
           inline_keyboard: [
